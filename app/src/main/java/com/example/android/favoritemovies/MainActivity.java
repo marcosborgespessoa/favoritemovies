@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                Toast.makeText(MainActivity.this, "Por favor check sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
             }
         }, order);
         return true;
