@@ -18,7 +18,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private final Context mContext;
     private final List<MovieTMDB> mData;
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/w185";
 
     public MovieAdapter(Context mContext, List<MovieTMDB> mData) {
         this.mContext = mContext;
@@ -36,7 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
-        Picasso.get().load(BASE_URL+mData.get(i).getPosterPath()).into(viewHolder.img_movie_thumbnail);
+        Picasso.get().load(Constantes.BASE_URL_IMAGE+mData.get(i).getPosterPath()).into(viewHolder.img_movie_thumbnail);
 
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 intent.putExtra("Title", mData.get(i).getTitle());
                 intent.putExtra("Overview", mData.get(i).getOverview());
                 intent.putExtra("Rating", mData.get(i).getRating());
-                intent.putExtra("PosterPath", BASE_URL + mData.get(i).getPosterPath());
+                intent.putExtra("PosterPath", Constantes.BASE_URL_IMAGE+mData.get(i).getPosterPath());
                 intent.putExtra("ReleaseDate", mData.get(i).getReleaseDate());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

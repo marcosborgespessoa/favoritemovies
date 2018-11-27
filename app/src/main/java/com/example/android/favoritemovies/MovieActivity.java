@@ -8,14 +8,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-@SuppressWarnings("ALL")
 public class MovieActivity extends AppCompatActivity {
 
     private TextView tvOverview;
     private TextView tvRating;
     private TextView tvRelesedDate;
     private ImageView imgThumbnail;
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/w185";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

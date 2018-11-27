@@ -10,9 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieRepository {
 
-    private static final String API_KEY = "08b9a2c416f877917e50279729e4dd40";
-    private static final String BASE_URL = "https://api.themoviedb.org/3/";
-    private static final String LANGUAGE = "en-US";
 
     private static MovieRepository repository;
 
@@ -25,7 +22,7 @@ public class MovieRepository {
     public static MovieRepository getInstance() {
         if (repository == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Constantes.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -39,7 +36,7 @@ public class MovieRepository {
 
         if (order.equals("popular")){
 
-            api.getPopularMovies(API_KEY, LANGUAGE, 1)
+            api.getPopularMovies(Constantes.API_KEY, Constantes.LANGUAGE, 1)
                     .enqueue(new Callback<MovieResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
@@ -63,7 +60,7 @@ public class MovieRepository {
 
         } else {
 
-            api.getTopMovies(API_KEY, LANGUAGE, 1)
+            api.getTopMovies(Constantes.API_KEY, Constantes.LANGUAGE, 1)
                     .enqueue(new Callback<MovieResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
