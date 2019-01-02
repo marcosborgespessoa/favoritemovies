@@ -2,7 +2,9 @@ package com.example.android.favoritemovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private final Context mContext;
+    private Cursor mCursor;
     private final List<MovieTMDB> mData;
 
     public MovieAdapter(Context mContext, List<MovieTMDB> mData) {
@@ -43,6 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
                 Intent intent = new Intent(mContext,MovieActivity.class);
 
+                intent.putExtra("MovieID", mData.get(i).getId());
                 intent.putExtra("Title", mData.get(i).getTitle());
                 intent.putExtra("Overview", mData.get(i).getOverview());
                 intent.putExtra("Rating", mData.get(i).getRating());
@@ -72,5 +76,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             cardView = itemView.findViewById(R.id.cardview_id);
         }
 
+    }
+
+    public Cursor swapCursor(Cursor c) {
+        if (mCursor == c) {
+            return null;
+        }
+        Cursor temp = mCursor;
+        this.mCursor = c;
+
+        if (c != null) {
+            this.notifyDataSetChanged();
+        }
+        return temp;
     }
 }

@@ -20,4 +20,5 @@ interface TMDbApi {
             @Query("language") String language,
             @Query("page") int page
     );
+
 }

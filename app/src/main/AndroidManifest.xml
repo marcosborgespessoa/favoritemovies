@@ -3,6 +3,8 @@
     package="com.example.android.favoritemovies">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.example.udacity.droidtermsexample.TERMS_READ"/>
+
 
     <application
         android:allowBackup="true"
@@ -20,6 +22,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MovieActivity" />
+
+        <provider
+            android:name="com.example.android.favoritemovies.data.FavMoviesContentProvider"
+            android:authorities="com.example.android.favoritemovies"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

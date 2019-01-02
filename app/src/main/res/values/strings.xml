@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Favorite Movies</string>
+
     <string name="menu_top">Top Rated</string>
     <string name="menu_popular">Popular</string>
+    <string name="menu_favoritos">Favoritos</string>
     <string name="movie_title">Book Title</string>
     <string name="movie_rating">Rating</string>
     <string name="movie_released_date">Released Date</string>

@@ -1,14 +1,15 @@
 package com.example.android.favoritemovies;
 
 import android.support.annotation.NonNull;
-
+import android.support.v7.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MovieRepository {
+public class MovieRepository extends AppCompatActivity {
+    //implements LoaderManager.LoaderCallbacks<Cursor>{
 
 
     private static MovieRepository repository;
@@ -34,7 +35,7 @@ public class MovieRepository {
 
     public void getMovies(final OnGetMoviesCallback callback, String order) {
 
-        if (order.equals("popular")){
+        if (order.equals("popular")) {
 
             api.getPopularMovies(Constantes.API_KEY, Constantes.LANGUAGE, 1)
                     .enqueue(new Callback<MovieResponse>() {
@@ -58,8 +59,7 @@ public class MovieRepository {
                         }
                     });
 
-        } else {
-
+        } else if (order.equals("top")) {
             api.getTopMovies(Constantes.API_KEY, Constantes.LANGUAGE, 1)
                     .enqueue(new Callback<MovieResponse>() {
                         @Override
@@ -82,5 +82,6 @@ public class MovieRepository {
                         }
                     });
         }
-    }
+
+        }
 }
