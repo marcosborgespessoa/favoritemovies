@@ -9,7 +9,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieRepository extends AppCompatActivity {
-    //implements LoaderManager.LoaderCallbacks<Cursor>{
 
 
     private static MovieRepository repository;

@@ -90,11 +90,24 @@ public class FavMoviesContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         Cursor retCursor;
         switch (match) {
-            // Query for the tasks directory
             case MOVIES:
                 retCursor =  db.query(FavMovieContract.TaskEntry.TABLE_NAME,
                         projection,
                         selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case MOVIE_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+
+                String mSelection = "movie_id=?";
+                String[] mSelectionArgs = new String[]{id};
+
+                retCursor =  db.query(FavMovieContract.TaskEntry.TABLE_NAME,
+                        projection,
+                        mSelection,
                         selectionArgs,
                         null,
                         null,

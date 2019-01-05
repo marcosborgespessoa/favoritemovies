@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 class MovieTMDB {
 
+    @SerializedName("db_id")
+    @Expose
+    private int db_id;
 
     @SerializedName("id")
     @Expose
@@ -77,4 +80,13 @@ class MovieTMDB {
     public void setId(String id) {
         this.id = id;
     }
+
+    public int getDb_id() {
+        return db_id;
+    }
+
+    public void setDb_id(int db_id) {
+        this.db_id = db_id;
+    }
+
 }

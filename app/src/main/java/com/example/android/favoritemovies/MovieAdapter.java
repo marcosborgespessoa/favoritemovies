@@ -46,6 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
                 Intent intent = new Intent(mContext,MovieActivity.class);
 
+                intent.putExtra("bdID", mData.get(i).getDb_id());
                 intent.putExtra("MovieID", mData.get(i).getId());
                 intent.putExtra("Title", mData.get(i).getTitle());
                 intent.putExtra("Overview", mData.get(i).getOverview());
@@ -78,13 +79,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     }
 
+    /**
+     * When data changes and a re-query occurs, this function swaps the old Cursor
+     * with a newly updated Cursor (Cursor c) that is passed in.
+     */
     public Cursor swapCursor(Cursor c) {
+        // check if this cursor is the same as the previous cursor (mCursor)
         if (mCursor == c) {
-            return null;
+            return null; // bc nothing has changed
         }
         Cursor temp = mCursor;
-        this.mCursor = c;
+        this.mCursor = c; // new cursor value assigned
 
+        //check if this is a valid cursor, then update the cursor
         if (c != null) {
             this.notifyDataSetChanged();
         }

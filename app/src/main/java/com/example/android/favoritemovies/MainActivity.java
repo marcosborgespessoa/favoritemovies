@@ -2,6 +2,10 @@ package com.example.android.favoritemovies;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,18 +16,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.android.favoritemovies.data.FavMovieContract;
+import com.example.android.favoritemovies.data.FavMoviesContentProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView movieList;
     private MovieAdapter movieAdapter;
     private MovieRepository movieRepository;
-    //private CustomCursorAdapter mAdapter;
-
+    private Cursor cursor;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean getMovies(String order) {
         if (order.equals("favorites") ) {
-            ArrayList<MovieTMDB> movies = getMoviesProvider();
+            ArrayList<MovieTMDB> movies = getMoviesProvider(cursor);
             movieAdapter = new MovieAdapter(MainActivity.this, movies);
             movieList.setAdapter(movieAdapter);
         } else {
@@ -84,12 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private ArrayList<MovieTMDB> getMoviesProvider() {
-        Cursor cursor = getContentResolver().query(FavMovieContract.TaskEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                FavMovieContract.TaskEntry.COLUMN_MOVIE_ID);
+    private ArrayList<MovieTMDB> getMoviesProvider(Cursor cursor) {
 
         MovieTMDB movieTMDB;
         ArrayList<MovieTMDB> movies = new ArrayList<MovieTMDB>();
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         if (cursor.moveToFirst()){
             do{
                 movieTMDB = new MovieTMDB();
+                movieTMDB.setDb_id(cursor.getInt(cursor.getColumnIndex(FavMovieContract.TaskEntry._ID)));
                 movieTMDB.setId(cursor.getString(cursor.getColumnIndex(FavMovieContract.TaskEntry.COLUMN_MOVIE_ID)));
                 movieTMDB.setTitle(cursor.getString(cursor.getColumnIndex(FavMovieContract.TaskEntry.COLUMN_TITLE)));
                 movieTMDB.setReleaseDate(cursor.getString(cursor.getColumnIndex(FavMovieContract.TaskEntry.COLUMN_RELEASE_DATE)));
@@ -107,6 +107,63 @@ public class MainActivity extends AppCompatActivity {
             }while(cursor.moveToNext());
         }
         return movies;
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            @Override
+            protected void onStartLoading() {
+                if (cursor != null) {
+                    getMovies("favorites");
+                } else {
+                    forceLoad();
+                }
+            }
+
+            // loadInBackground() performs asynchronous loading of data
+            @Override
+            public Cursor loadInBackground() {
+
+                try {
+                    cursor = getContentResolver().query(FavMovieContract.TaskEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            FavMovieContract.TaskEntry.COLUMN_MOVIE_ID);
+
+                    return cursor;
+                } catch (Exception e) {
+                   // Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                cursor = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        movieAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        movieAdapter.swapCursor(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(FavMoviesContentProvider.MOVIE_WITH_ID, null, this);
     }
 
 }
