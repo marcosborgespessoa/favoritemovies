@@ -14,13 +14,11 @@
 * limitations under the License.
 */
 
-package com.example.android.favoritemovies.data;
+package com.example.android.favoritemovies.dataModel;
 
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.widget.TextView;
-
-import com.example.android.favoritemovies.R;
 
 
 public class FavMovieContract {
@@ -34,7 +32,6 @@ public class FavMovieContract {
 
     public static final class TaskEntry implements BaseColumns {
 
-        // TaskEntry content URI = base content URI + path
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TASKS).build();
 
         public static final String TABLE_NAME = "movies";
@@ -45,5 +42,11 @@ public class FavMovieContract {
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_RELEASE_DATE = "releaseDate";
         public static final String COLUMN_THUMBNAIL = "thumbnail";
+        public static final String COLUMN_REVIEWS = "reviews";
+        public static final String COLUMN_TRAILERS = "trailers";
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }

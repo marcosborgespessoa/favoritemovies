@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.example.android.favoritemovies.data;
+package com.example.android.favoritemovies.dataModel;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -104,11 +104,10 @@ public class FavMoviesContentProvider extends ContentProvider {
 
                 String mSelection = "movie_id=?";
                 String[] mSelectionArgs = new String[]{id};
-
                 retCursor =  db.query(FavMovieContract.TaskEntry.TABLE_NAME,
                         projection,
                         mSelection,
-                        selectionArgs,
+                        mSelectionArgs,
                         null,
                         null,
                         sortOrder);
@@ -131,15 +130,16 @@ public class FavMoviesContentProvider extends ContentProvider {
         int tasksDeleted;
 
         switch (match) {
-            case MOVIE_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                tasksDeleted = db.delete(FavMovieContract.TaskEntry.TABLE_NAME, "_id=?", new String[]{id});
+            case MOVIES:
+                tasksDeleted = db.delete(FavMovieContract.TaskEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
+        if (tasksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
 
         return tasksDeleted;
     }

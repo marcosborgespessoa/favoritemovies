@@ -1,37 +1,73 @@
 package com.example.android.favoritemovies;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class MovieTMDB {
+public class MovieTMDB implements Parcelable {
 
-    @SerializedName("db_id")
-    @Expose
-    private int db_id;
-
-    @SerializedName("id")
-    @Expose
-    private String id;
-
-    @SerializedName("title")
-    @Expose
+    private int id;
     private String title;
-
-    @SerializedName("poster_path")
-    @Expose
     private String posterPath;
-
-    @SerializedName("release_date")
-    @Expose
     private String releaseDate;
-
-    @SerializedName("vote_average")
-    @Expose
-    private float rating;
-
-    @SerializedName("overview")
-    @Expose
+    private String rating;
     private String overview;
+    private String trailers;
+    private String reviews;
+
+
+    public MovieTMDB(int id, String title, String posterPath, String releaseDate, String rating, String overview) {
+        this.id = id;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+        this.overview = overview;
+    }
+
+    public MovieTMDB(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.posterPath = in.readString();
+        this.releaseDate = in.readString();
+        this.rating = in.readString();
+        this.overview = in.readString();
+        this.trailers = in.readString();
+        this.reviews = in.readString();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(posterPath);
+        dest.writeString(releaseDate);
+        dest.writeString(rating);
+        dest.writeString(overview);
+        dest.writeString(getTrailers());
+        dest.writeString(getReviews());
+    }
+
+    public static final Parcelable.Creator<MovieTMDB> CREATOR = new Parcelable.Creator<MovieTMDB>() {
+        @Override
+        public MovieTMDB createFromParcel(Parcel in) {
+            return new MovieTMDB(in);
+        }
+
+        @Override
+        public MovieTMDB[] newArray(int size) {
+            return new MovieTMDB[size];
+        }
+    };
+
 
     public String getTitle() {
         return title;
@@ -57,11 +93,11 @@ class MovieTMDB {
         this.releaseDate = releaseDate;
     }
 
-    public float getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -73,20 +109,27 @@ class MovieTMDB {
         this.overview = overview;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getDb_id() {
-        return db_id;
+    public String getTrailers() {
+        return trailers;
     }
 
-    public void setDb_id(int db_id) {
-        this.db_id = db_id;
+    public String getReviews() {
+        return reviews;
     }
 
+    public void setTrailers(String trailers) {
+        this.trailers = trailers;
+    }
+
+    public void setReviews(String reviews) {
+        this.reviews = reviews;
+    }
 }

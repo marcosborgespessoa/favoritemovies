@@ -14,20 +14,20 @@
 * limitations under the License.
 */
 
-package com.example.android.favoritemovies.data;
+package com.example.android.favoritemovies.dataModel;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.android.favoritemovies.data.FavMovieContract.TaskEntry;
+import com.example.android.favoritemovies.dataModel.FavMovieContract.TaskEntry;
 
 
 public class FavMovieDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "favMovieDB.db";
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 3;
 
     FavMovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -43,7 +43,9 @@ public class FavMovieDbHelper extends SQLiteOpenHelper {
                         TaskEntry.COLUMN_OVERVIEW     + " TEXT NOT NULL, " +
                         TaskEntry.COLUMN_RATING       + " REAL NOT NULL, " +
                         TaskEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
-                        TaskEntry.COLUMN_THUMBNAIL    + " TEXT NOT NULL);";
+                        TaskEntry.COLUMN_THUMBNAIL    + " TEXT NOT NULL, " +
+                        TaskEntry.COLUMN_TRAILERS     + " TEXT, " +
+                        TaskEntry.COLUMN_REVIEWS      + " TEXT);";
 
         db.execSQL(CREATE_TABLE);
     }
